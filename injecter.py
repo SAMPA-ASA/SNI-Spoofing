@@ -1,4 +1,5 @@
-import sys
+import logging
+import time
 from abc import ABC, abstractmethod
 
 from pydivert import WinDivert, Packet
@@ -9,6 +10,8 @@ from pydivert import WinDivert, Packet
 
 class TcpInjector(ABC):
     def __init__(self, w_filter: str):
+        self.w_filter = w_filter
+        self.w: WinDivert | None = None
         # self.interface_ipv4 = interface_ipv4
         # self.interface_ipv6 = interface_ipv6
         # ip_filter = ip4_filter = ip6_filter = ""
@@ -24,14 +27,29 @@ class TcpInjector(ABC):
         # self.filter = "tcp"
         # if ip_filter:
         #     self.filter += " and " + ip_filter
-        self.w: WinDivert = WinDivert(w_filter)
-
     @abstractmethod
     def inject(self, packet: Packet):
-        sys.exit("Not implemented")
+        raise NotImplementedError("inject() must be implemented by subclasses")
 
     def run(self):
-        with self.w:
-            while True:
-                packet = self.w.recv(65575)
-                self.inject(packet)
+        retry_delay_sec = 1
+        while True:
+            try:
+                self.w = WinDivert(self.w_filter)
+                with self.w:
+                    logging.info("WinDivert started with filter: %s", self.w_filter)
+                    retry_delay_sec = 1
+                    while True:
+                        try:
+                            packet = self.w.recv(65575)
+                            self.inject(packet)
+                        except Exception:
+                            logging.exception("Packet processing error in WinDivert loop.")
+                            time.sleep(0.01)
+            except Exception:
+                logging.exception(
+                    "WinDivert loop failed. Retrying in %s second(s).",
+                    retry_delay_sec,
+                )
+                time.sleep(retry_delay_sec)
+                retry_delay_sec = min(retry_delay_sec * 2, 10)
