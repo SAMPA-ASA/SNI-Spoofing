@@ -1,15 +1,18 @@
 # SNI-Spoofing
-Bypass DPI with IP/TCP-Header manipulation
 
-حمایت کنید کارهای بزرگی در دست انجام هست:
+دور زدن DPI با دستکاری هدرهای IP و TCP
 
-USDT (BEP20): 0x76a768B53Ca77B43086946315f0BDF21156bF424
+این پروژه از [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) فورک شده است.
 
-USDT (TRC20): TU5gKvKqcXPn8itp1DouBCwcqGHMemBm8o
+## تفاوت این پروژه با [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing)
 
+در این پروژه تغییرات زیر اعمال شده‌اند:
 
+- بخش عمدهٔ لاگ‌ها به‌جای نمایش در کنسول، در فایل‌های لاگ داخل مسیر `/logs` ذخیره می‌شوند.
+- فایل‌های لاگ بر اساس تاریخ تفکیک شده‌اند؛ به‌طوری که برای هر روز یک فایل لاگ جداگانه ایجاد می‌شود.
+- در نسخهٔ اصلی، هنگام قطع شدن اتصال شبکه، برنامه دچار Crash می‌شد. این مشکل برطرف شده است.
+- از آنجا که اجرای برنامه به دسترسی Administrator نیاز دارد، در ویندوز برنامه به‌صورت خودکار با سطح دسترسی Administrator اجرا می‌شود.
 
+---
 
-https://t.me/projectXhttp
-
-https://t.me/patterniha
+به امید روزی که همه به اینترنت آزاد و بدون محدودیت دسترسی داشته باشند. 🕊
