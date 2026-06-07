@@ -8,6 +8,7 @@ import subprocess
 import sys
 import threading
 import json
+from typing import Any
 
 # from utils.proxy_protocols import parse_vless_protocol
 from utils.network_tools import get_default_interface_ipv4
@@ -88,7 +89,7 @@ def setup_global_exception_logging():
             return
         logging.critical("Unhandled exception in main thread.", exc_info=(exc_type, exc_value, exc_traceback))
 
-    def thread_excepthook(args: threading.ExceptHookArgs):
+    def thread_excepthook(args: Any):
         if issubclass(args.exc_type, KeyboardInterrupt):
             logging.info("KeyboardInterrupt received in thread: %s", args.thread.name)
             return
@@ -98,7 +99,7 @@ def setup_global_exception_logging():
             exc_info=(args.exc_type, args.exc_value, args.exc_traceback),
         )
 
-    def unraisablehook(unraisable: sys.UnraisableHookArgs):
+    def unraisablehook(unraisable: Any):
         logging.critical(
             "Unraisable exception: %s",
             getattr(unraisable, "err_msg", "no message"),
@@ -399,12 +400,10 @@ if __name__ == "__main__":
     fake_tcp_injector = FakeTcpInjector(w_filter, fake_injective_connections)
     threading.Thread(target=fake_tcp_injector.run, args=(), daemon=True).start()
     logging.info("Program started.")
-    print("هشن شومافر تیامح دینکیم هدافتسا دازآ تنرتنیا هب یسرتسد یارب همانرب نیا زا رگا")
-    print(
-        "دراد امش تیامح هب زاین هک مراد رظن رد دازآ تنرتنیا هب ناریا مدرم مامت یسرتسد یارب یدایز یاه همانرب و اه هژورپ")
     print("\n")
-    print("USDT (BEP20): 0x76a768B53Ca77B43086946315f0BDF21156bF424\n")
-    print("@patterniha")
+    print("repo link: https://github.com/SAMPA-asa/sni-spoofing")
+    print("forked from: https://github.com/patterniha/SNI-Spoofing")
+    print("\n")
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
